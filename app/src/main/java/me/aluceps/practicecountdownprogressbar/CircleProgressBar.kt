@@ -45,6 +45,18 @@ class CircleProgressBar @JvmOverloads constructor(
     private var started = false
     private var startTime = 0L
 
+    interface ProgressState {
+        fun onStarted()
+        fun onFinished()
+        fun onProgress(progress: Int)
+    }
+
+    private var listener: ProgressState? = null
+
+    fun setOnProgressState(listener: ProgressState) {
+        this.listener = listener
+    }
+
     init {
         setup(context, attrs, defStyleAttr)
     }
@@ -87,15 +99,23 @@ class CircleProgressBar @JvmOverloads constructor(
             width - progressStrokeWidth,
             height - progressStrokeWidth
         )
+
         canvas?.drawArc(progressOval, 0f, 360f, false, progressSecondaryPaint)
-        if (started) canvas?.drawArc(progressOval, 270f, getAngle(), false, progressPaint)
+
+        if (started) getAngle().let { angle ->
+            canvas?.drawArc(progressOval, 270f, angle, false, progressPaint)
+            listener?.onProgress((angle / 360 * 100).toInt())
+        }
     }
 
     private fun getAngle(): Float {
         val currentAngle = (Date().time - startTime).toFloat() / duration * 360f
         return when {
             startTime == 0L -> 0f
-            currentAngle > 360f -> stopCountDown()
+            currentAngle > 360f -> {
+                stopCountDown()
+                0f
+            }
             else -> currentAngle
         }
     }
@@ -103,12 +123,13 @@ class CircleProgressBar @JvmOverloads constructor(
     fun startCountDown() {
         started = true
         startTime = Date().time
+        listener?.onStarted()
     }
 
-    fun stopCountDown(): Float {
+    fun stopCountDown() {
         started = false
         startTime = 0
-        return startTime.toFloat()
+        listener?.onFinished()
     }
 
     private fun getColor(resId: Int): Int =
