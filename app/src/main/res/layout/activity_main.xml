@@ -30,6 +30,7 @@
             app:layout_constraintEnd_toEndOf="@id/button"
             app:layout_constraintStart_toStartOf="@id/button"
             app:layout_constraintTop_toTopOf="@id/button"
+            app:progress_duration="5"
             app:progress_stroke_width="8dp"
             />
     </android.support.constraint.ConstraintLayout>

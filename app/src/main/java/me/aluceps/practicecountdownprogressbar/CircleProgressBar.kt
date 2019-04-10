@@ -7,6 +7,7 @@ import android.graphics.RectF
 import android.support.v4.content.res.ResourcesCompat
 import android.util.AttributeSet
 import android.view.View
+import java.util.*
 
 class CircleProgressBar @JvmOverloads constructor(
     context: Context?,
@@ -24,6 +25,8 @@ class CircleProgressBar @JvmOverloads constructor(
             isAntiAlias = true
             style = Paint.Style.STROKE
             strokeWidth = progressStrokeWidth
+            strokeJoin = Paint.Join.ROUND
+            strokeCap = Paint.Cap.ROUND
             color = progressColor
         }
     }
@@ -38,6 +41,9 @@ class CircleProgressBar @JvmOverloads constructor(
     }
 
     private val progressOval = RectF()
+
+    private var started = false
+    private var startTime = 0L
 
     init {
         setup(context, attrs, defStyleAttr)
@@ -60,9 +66,17 @@ class CircleProgressBar @JvmOverloads constructor(
             ?.let { progressStrokeWidth = it }
 
         typedArray?.getInt(R.styleable.CircleProgressBar_progress_duration, 0)
-            ?.let { duration = it }
+            ?.let { duration = it * 1000 }
 
         typedArray?.recycle()
+
+        Timer().apply {
+            schedule(object : TimerTask() {
+                override fun run() {
+                    invalidate()
+                }
+            }, 10, 10)
+        }
     }
 
     override fun onDraw(canvas: Canvas?) {
@@ -74,15 +88,29 @@ class CircleProgressBar @JvmOverloads constructor(
             height - progressStrokeWidth
         )
         canvas?.drawArc(progressOval, 0f, 360f, false, progressSecondaryPaint)
-        canvas?.drawArc(progressOval, 270f, 250f, false, progressPaint)
+        if (started) canvas?.drawArc(progressOval, 270f, getAngle(), false, progressPaint)
+    }
+
+    private fun getAngle(): Float {
+        val currentAngle = (Date().time - startTime).toFloat() / duration * 360f
+        return when {
+            startTime == 0L -> 0f
+            currentAngle > 360f -> stopCountDown()
+            else -> currentAngle
+        }
+    }
+
+    fun startCountDown() {
+        started = true
+        startTime = Date().time
+    }
+
+    fun stopCountDown(): Float {
+        started = false
+        startTime = 0
+        return startTime.toFloat()
     }
 
     private fun getColor(resId: Int): Int =
         ResourcesCompat.getColor(resources, resId, null)
-
-    private fun Context.convertPx2Dp(px: Int): Float =
-        px / context.resources.displayMetrics.density
-
-    private fun Context.convertDp2Px(dp: Int): Float =
-        dp * context.resources.displayMetrics.density
 }
