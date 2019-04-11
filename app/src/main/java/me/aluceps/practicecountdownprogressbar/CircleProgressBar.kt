@@ -122,14 +122,15 @@ class CircleProgressBar @JvmOverloads constructor(
 
     fun startCountDown() {
         started = true
-        startTime = Date().time
         listener?.onStarted()
+        startTime = Date().time
     }
 
     fun stopCountDown() {
+        if (!started) return
         started = false
-        startTime = 0
         listener?.onFinished()
+        startTime = 0
     }
 
     private fun getColor(resId: Int): Int =

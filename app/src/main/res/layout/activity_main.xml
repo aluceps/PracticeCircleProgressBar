@@ -7,6 +7,7 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#aaa"
         tools:context=".MainActivity"
         >
 
@@ -14,12 +15,11 @@
             android:id="@+id/button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="60dp"
             android:background="@drawable/circle_button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.8"
             />
 
         <me.aluceps.practicecountdownprogressbar.CircleProgressBar
@@ -31,7 +31,9 @@
             app:layout_constraintEnd_toEndOf="@id/button"
             app:layout_constraintStart_toStartOf="@id/button"
             app:layout_constraintTop_toTopOf="@id/button"
-            app:progress_duration="15"
+            app:progress_color="#f00"
+            app:progress_duration="5"
+            app:progress_secondary_color="#afff"
             app:progress_stroke_width="4dp"
             />
     </android.support.constraint.ConstraintLayout>

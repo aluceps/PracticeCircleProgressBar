@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.MotionEvent
+import android.view.animation.AnimationUtils
 import me.aluceps.practicecountdownprogressbar.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity(), CircleProgressBar.ProgressState {
@@ -16,10 +17,14 @@ class MainActivity : AppCompatActivity(), CircleProgressBar.ProgressState {
 
     private var isLongClick = false
 
-    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.progress.setOnProgressState(this)
+        setupListener()
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setupListener() {
         binding.button.setOnClickListener {
             Log.d("###", "setOnClickListener")
         }
@@ -29,12 +34,12 @@ class MainActivity : AppCompatActivity(), CircleProgressBar.ProgressState {
             binding.progress.startCountDown()
             true
         }
-        binding.button.setOnTouchListener { v, e ->
+        binding.button.setOnTouchListener { _, e ->
             when (e.action) {
                 MotionEvent.ACTION_UP -> if (!isLongClick) false else {
                     Log.d("###", "setOnTouchListener: ACTION_UP")
-                    binding.progress.stopCountDown()
                     isLongClick = false
+                    binding.progress.stopCountDown()
                     true
                 }
                 else -> false
@@ -44,10 +49,14 @@ class MainActivity : AppCompatActivity(), CircleProgressBar.ProgressState {
 
     override fun onStarted() {
         Log.d("CircleProgressBar", "progress: start")
+        binding.button.startAnimation(AnimationUtils.loadAnimation(this, R.anim.scale_down_button))
+        binding.progress.startAnimation(AnimationUtils.loadAnimation(this, R.anim.scale_up_progress))
     }
 
     override fun onFinished() {
         Log.d("CircleProgressBar", "progress: finish")
+        binding.button.startAnimation(AnimationUtils.loadAnimation(this, R.anim.scale_up_button))
+        binding.progress.startAnimation(AnimationUtils.loadAnimation(this, R.anim.scale_down_progress))
     }
 
     override fun onProgress(progress: Int) {
