@@ -20,21 +20,25 @@ class MainActivity : AppCompatActivity(), CircleProgressBar.ProgressState {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.progress.setOnProgressState(this)
+        binding.button.setOnClickListener {
+            Log.d("###", "setOnClickListener")
+        }
         binding.button.setOnLongClickListener {
+            Log.d("###", "setOnLongClickListener")
             isLongClick = true
             binding.progress.startCountDown()
             true
         }
         binding.button.setOnTouchListener { v, e ->
-            if (e.action == MotionEvent.ACTION_UP) {
-                if (isLongClick) {
+            when (e.action) {
+                MotionEvent.ACTION_UP -> if (!isLongClick) false else {
+                    Log.d("###", "setOnTouchListener: ACTION_UP")
                     binding.progress.stopCountDown()
                     isLongClick = false
                     true
                 }
-                false
+                else -> false
             }
-            false
         }
     }
 

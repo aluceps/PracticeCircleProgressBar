@@ -99,12 +99,12 @@ class CircleProgressBar @JvmOverloads constructor(
             width - progressStrokeWidth,
             height - progressStrokeWidth
         )
-
         canvas?.drawArc(progressOval, 0f, 360f, false, progressSecondaryPaint)
-
         if (started) getAngle().let { angle ->
             canvas?.drawArc(progressOval, 270f, angle, false, progressPaint)
             listener?.onProgress((angle / 360 * 100).toInt())
+        } else {
+            canvas?.drawArc(progressOval, 270f, 360f, false, progressPaint)
         }
     }
 
