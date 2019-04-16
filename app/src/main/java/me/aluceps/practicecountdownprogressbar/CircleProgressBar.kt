@@ -85,7 +85,7 @@ class CircleProgressBar @JvmOverloads constructor(
         Timer().apply {
             schedule(object : TimerTask() {
                 override fun run() {
-                    invalidate()
+                    post { invalidate() }
                 }
             }, 10, 10)
         }
