@@ -61,5 +61,10 @@ class MainActivity : AppCompatActivity(), CircleProgressBar.ProgressState {
 
     override fun onProgress(progress: Int) {
         Log.d("CircleProgressBar", "progress: $progress")
+        if (progress == 0 || progress > 50) {
+            binding.progress.setProgressColorPrimary()
+        } else {
+            binding.progress.setProgressColorSecondary()
+        }
     }
 }

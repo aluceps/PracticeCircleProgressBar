@@ -6,4 +6,5 @@
 
     <color name="colorProgress">#7ad</color>
     <color name="colorProgressSecondaly">#ccc</color>
+    <color name="colorProgressBase">#ccc</color>
 </resources>
