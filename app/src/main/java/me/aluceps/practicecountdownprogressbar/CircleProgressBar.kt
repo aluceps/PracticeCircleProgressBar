@@ -17,6 +17,7 @@ class CircleProgressBar @JvmOverloads constructor(
 
     private var progressColor = 0
     private var progressColorSecondary = 0
+    private var progressColorBase = 0
     private var progressStrokeWidth = 0f
     private var duration = 0
 
@@ -36,7 +37,7 @@ class CircleProgressBar @JvmOverloads constructor(
             isAntiAlias = true
             style = Paint.Style.STROKE
             strokeWidth = progressStrokeWidth
-            color = progressColorSecondary
+            color = progressColorBase
         }
     }
 
@@ -73,6 +74,11 @@ class CircleProgressBar @JvmOverloads constructor(
             R.styleable.CircleProgressBar_progress_secondary_color,
             getColor(R.color.colorProgressSecondaly)
         )?.let { progressColorSecondary = it }
+
+        typedArray?.getColor(
+            R.styleable.CircleProgressBar_progress_base_color,
+            getColor(R.color.colorProgressBase)
+        )?.let { progressColorBase = it }
 
         typedArray?.getDimension(R.styleable.CircleProgressBar_progress_stroke_width, 0f)
             ?.let { progressStrokeWidth = it }
@@ -131,6 +137,14 @@ class CircleProgressBar @JvmOverloads constructor(
         started = false
         listener?.onFinished()
         startTime = 0
+    }
+
+    fun setProgressColorPrimary() {
+        progressPaint.color = progressColor
+    }
+
+    fun setProgressColorSecondary() {
+        progressPaint.color = progressColorSecondary
     }
 
     private fun getColor(resId: Int): Int =

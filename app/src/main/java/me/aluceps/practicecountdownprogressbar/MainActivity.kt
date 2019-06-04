@@ -40,6 +40,7 @@ class MainActivity : AppCompatActivity(), CircleProgressBar.ProgressState {
                     Log.d("###", "setOnTouchListener: ACTION_UP")
                     isLongClick = false
                     binding.progress.stopCountDown()
+                    binding.progress.setProgressColorPrimary()
                     true
                 }
                 else -> false
@@ -61,5 +62,10 @@ class MainActivity : AppCompatActivity(), CircleProgressBar.ProgressState {
 
     override fun onProgress(progress: Int) {
         Log.d("CircleProgressBar", "progress: $progress")
+        if (progress > 50) {
+            binding.progress.setProgressColorPrimary()
+        } else {
+            binding.progress.setProgressColorSecondary()
+        }
     }
 }
