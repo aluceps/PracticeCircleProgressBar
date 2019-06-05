@@ -20,15 +20,18 @@ class CircleProgressBar @JvmOverloads constructor(
     private var progressColorBase = 0
     private var progressStrokeWidth = 0f
     private var duration = 0
+    private var squareStyle = false
 
     private val progressPaint by lazy {
         Paint().apply {
             isAntiAlias = true
             style = Paint.Style.STROKE
             strokeWidth = progressStrokeWidth
-            strokeJoin = Paint.Join.ROUND
-            strokeCap = Paint.Cap.ROUND
             color = progressColor
+            if (!squareStyle) {
+                strokeJoin = Paint.Join.ROUND
+                strokeCap = Paint.Cap.ROUND
+            }
         }
     }
 
@@ -85,6 +88,9 @@ class CircleProgressBar @JvmOverloads constructor(
 
         typedArray?.getInt(R.styleable.CircleProgressBar_progress_duration, 0)
             ?.let { duration = it * 1000 }
+
+        typedArray?.getBoolean(R.styleable.CircleProgressBar_progress_square_style, false)
+            ?.let { squareStyle = it }
 
         typedArray?.recycle()
 
