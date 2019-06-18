@@ -7,5 +7,6 @@
         <attr name="progress_stroke_width" format="dimension|reference" />
         <attr name="progress_duration" format="integer|reference" />
         <attr name="progress_round_style" format="boolean|reference" />
+        <attr name="progress_is_increment" format="boolean|reference" />
     </declare-styleable>
 </resources>

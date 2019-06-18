@@ -1,5 +1,6 @@
 package me.aluceps.practicecountdownprogressbar
 
+import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
@@ -21,6 +22,7 @@ class CircleProgressBar @JvmOverloads constructor(
     private var progressStrokeWidth = 0f
     private var duration = 0
     private var roundStyle = false
+    private var isIncrement = false
 
     private val progressPaint by lazy {
         Paint().apply {
@@ -48,6 +50,10 @@ class CircleProgressBar @JvmOverloads constructor(
 
     private var started = false
     private var startTime = 0L
+
+    private val incrementMax by lazy { duration / 1000 }
+    private var currentValue = 0f
+    private var animation: ValueAnimator? = null
 
     interface ProgressState {
         fun onStarted()
@@ -92,6 +98,9 @@ class CircleProgressBar @JvmOverloads constructor(
         typedArray?.getBoolean(R.styleable.CircleProgressBar_progress_round_style, false)
             ?.let { roundStyle = it }
 
+        typedArray?.getBoolean(R.styleable.CircleProgressBar_progress_is_increment, false)
+            ?.let { isIncrement = it }
+
         typedArray?.recycle()
 
         Timer().apply {
@@ -112,11 +121,17 @@ class CircleProgressBar @JvmOverloads constructor(
             height - progressStrokeWidth
         )
         canvas?.drawArc(progressOval, 0f, 360f, false, progressSecondaryPaint)
-        if (started) getAngle().let { angle ->
-            canvas?.drawArc(progressOval, 270f, angle, false, progressPaint)
-            listener?.onProgress((angle / 360 * 100).toInt())
+        if (isIncrement) {
+            (animation?.animatedValue as? Float)?.let { angle ->
+                canvas?.drawArc(progressOval, 270f, angle, false, progressPaint)
+            }
         } else {
-            canvas?.drawArc(progressOval, 270f, 360f, false, progressPaint)
+            if (started) getAngle().let { angle ->
+                canvas?.drawArc(progressOval, 270f, angle, false, progressPaint)
+                listener?.onProgress((angle / 360 * 100).toInt())
+            } else {
+                canvas?.drawArc(progressOval, 270f, 360f, false, progressPaint)
+            }
         }
     }
 
@@ -133,16 +148,39 @@ class CircleProgressBar @JvmOverloads constructor(
     }
 
     fun startCountDown() {
+        if (isIncrement) return
         started = true
         listener?.onStarted()
         startTime = Date().time
     }
 
     fun stopCountDown() {
+        if (isIncrement) return
         if (!started) return
         started = false
         listener?.onFinished()
         startTime = 0
+    }
+
+    fun increment() {
+        if (!isIncrement) return
+        if (currentValue < incrementMax) {
+            currentValue++
+            start()
+        }
+    }
+
+    fun reset() {
+        if (!isIncrement) return
+        currentValue = 0f
+    }
+
+    fun start() {
+        if (!isIncrement) return
+        val toValue = currentValue / incrementMax * 360
+        animation = ValueAnimator.ofFloat(0f, toValue)
+        animation?.duration = 500
+        animation?.start()
     }
 
     fun setProgressColorPrimary() {

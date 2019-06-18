@@ -13,6 +13,35 @@
         tools:context=".MainActivity"
         >
 
+        <me.aluceps.practicecountdownprogressbar.CircleProgressBar
+            android:id="@+id/progress_increment"
+            android:layout_width="300dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="30dp"
+            app:layout_constraintDimensionRatio="w,1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:progress_base_color="#fff"
+            app:progress_color="#0f0"
+            app:progress_duration="4"
+            app:progress_is_increment="true"
+            app:progress_round_style="false"
+            app:progress_secondary_color="#30f0"
+            app:progress_stroke_width="16dp"
+            />
+
+        <Button
+            android:id="@+id/button_increment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="click"
+            app:layout_constraintBottom_toBottomOf="@id/progress_increment"
+            app:layout_constraintEnd_toEndOf="@id/progress_increment"
+            app:layout_constraintStart_toStartOf="@id/progress_increment"
+            app:layout_constraintTop_toTopOf="@id/progress_increment"
+            />
+
         <ImageButton
             android:id="@+id/button"
             android:layout_width="wrap_content"

@@ -46,6 +46,9 @@ class MainActivity : AppCompatActivity(), CircleProgressBar.ProgressState {
                 else -> false
             }
         }
+        binding.buttonIncrement.setOnClickListener {
+            binding.progressIncrement.increment()
+        }
     }
 
     override fun onStarted() {
