@@ -36,8 +36,8 @@
             app:progress_base_color="#afff"
             app:progress_color="#f00"
             app:progress_duration="5"
-            app:progress_secondary_color="#f88"
-            app:progress_square_style="true"
+            app:progress_round_style="true"
+            app:progress_secondary_color="#3f00"
             app:progress_stroke_width="4dp"
             />
     </android.support.constraint.ConstraintLayout>
