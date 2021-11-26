@@ -173,6 +173,9 @@ class CircleProgressBar @JvmOverloads constructor(
     fun reset() {
         if (!isIncrement) return
         currentValue = 0f
+        animation = ValueAnimator.ofFloat(0f, currentValue)
+        animation?.duration = 0
+        animation?.start()
     }
 
     fun start() {
