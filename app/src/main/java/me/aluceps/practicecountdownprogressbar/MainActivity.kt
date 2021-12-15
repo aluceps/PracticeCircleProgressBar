@@ -1,12 +1,12 @@
 package me.aluceps.practicecountdownprogressbar
 
 import android.annotation.SuppressLint
-import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.view.MotionEvent
 import android.view.animation.AnimationUtils
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import me.aluceps.practicecountdownprogressbar.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity(), CircleProgressBar.ProgressState {
@@ -57,17 +57,28 @@ class MainActivity : AppCompatActivity(), CircleProgressBar.ProgressState {
     override fun onStarted() {
         Log.d("CircleProgressBar", "progress: start")
         binding.button.startAnimation(AnimationUtils.loadAnimation(this, R.anim.scale_down_button))
-        binding.progress.startAnimation(AnimationUtils.loadAnimation(this, R.anim.scale_up_progress))
+        binding.progress.startAnimation(
+            AnimationUtils.loadAnimation(
+                this,
+                R.anim.scale_up_progress
+            )
+        )
     }
 
     override fun onFinished() {
         Log.d("CircleProgressBar", "progress: finish")
         binding.button.startAnimation(AnimationUtils.loadAnimation(this, R.anim.scale_up_button))
-        binding.progress.startAnimation(AnimationUtils.loadAnimation(this, R.anim.scale_down_progress))
+        binding.progress.startAnimation(
+            AnimationUtils.loadAnimation(
+                this,
+                R.anim.scale_down_progress
+            )
+        )
     }
 
     override fun onProgress(progress: Float) {
         Log.d("CircleProgressBar", "progress: $progress")
+        binding.simpleProgress.setProgress(progress / 100f)
         if (progress > 50) {
             binding.progress.setProgressColorPrimary()
         } else {
