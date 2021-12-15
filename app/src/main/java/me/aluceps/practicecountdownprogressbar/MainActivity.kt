@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity(), CircleProgressBar.ProgressState {
         binding.progress.startAnimation(AnimationUtils.loadAnimation(this, R.anim.scale_down_progress))
     }
 
-    override fun onProgress(progress: Int) {
+    override fun onProgress(progress: Float) {
         Log.d("CircleProgressBar", "progress: $progress")
         if (progress > 50) {
             binding.progress.setProgressColorPrimary()

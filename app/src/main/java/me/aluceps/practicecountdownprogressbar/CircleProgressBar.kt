@@ -58,7 +58,7 @@ class CircleProgressBar @JvmOverloads constructor(
     interface ProgressState {
         fun onStarted()
         fun onFinished()
-        fun onProgress(progress: Int)
+        fun onProgress(progress: Float)
     }
 
     private var listener: ProgressState? = null
