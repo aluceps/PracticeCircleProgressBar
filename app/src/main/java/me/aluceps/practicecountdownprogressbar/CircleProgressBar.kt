@@ -5,10 +5,12 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.RectF
-import androidx.core.content.res.ResourcesCompat
 import android.util.AttributeSet
 import android.view.View
-import java.util.*
+import androidx.core.content.res.ResourcesCompat
+import java.util.Date
+import java.util.Timer
+import java.util.TimerTask
 
 class CircleProgressBar @JvmOverloads constructor(
     context: Context?,
@@ -72,7 +74,8 @@ class CircleProgressBar @JvmOverloads constructor(
     }
 
     private fun setup(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) {
-        val typedArray = context?.obtainStyledAttributes(attrs, R.styleable.CircleProgressBar, defStyleAttr, 0)
+        val typedArray =
+            context?.obtainStyledAttributes(attrs, R.styleable.CircleProgressBar, defStyleAttr, 0)
 
         typedArray?.getColor(
             R.styleable.CircleProgressBar_progress_color,
@@ -128,7 +131,7 @@ class CircleProgressBar @JvmOverloads constructor(
         } else {
             if (started) getAngle().let { angle ->
                 canvas?.drawArc(progressOval, 270f, angle, false, progressPaint)
-                listener?.onProgress((angle / 360 * 100).toInt())
+                listener?.onProgress(angle / 360f * 100f)
             } else {
                 canvas?.drawArc(progressOval, 270f, 360f, false, progressPaint)
             }
